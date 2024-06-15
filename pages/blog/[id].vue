@@ -1,25 +1,25 @@
 <template>
   <div>
-    <div>
-      <nuxt-img :src="data.image" alt="blog-image" format="webp"></nuxt-img>
+    <div class="hero">
+      <nuxt-img :src="data.image" alt="blog-image" format="webp" />
     </div>
-    <div>
-      <div>
+    <div class="wrapper">
+      <div class="container">
         <h1>{{ data.title }}</h1>
         <p>{{ data.date }}</p>
         <ContentDoc />
       </div>
+      <PrevNext :prev="prev" :next="next" />
     </div>
   </div>
 </template>
 
 <script setup>
-// useAsyncDataで非同期取得
 const { data } = await useAsyncData(useRoute().path, () =>
-  // ルートオブジェクト取得、一番最初のコンテンツを取得
   queryContent(useRoute().path).findOne()
 );
 
-console.log("data");
-console.log(useRoute().path);
+const [prev, next] = await queryContent("/blog")
+  .sort({ id: 1 })
+  .findSurround(useRoute().path);
 </script>

@@ -1,34 +1,39 @@
 <template>
-  <div>
-    <!-- {{ data }} -->
-    <p>This is Enginere Life</p>
-    <div v-for="singleData in data" :key="singleData.id">
-      <div>
-        <h3>{{ singleData.title }}</h3>
-        <p>{{ singleData.excerpt }}</p>
-        <p>{{ singleData.date }}</p>
-        <NuxtLink :to="singleData._path">Read More</NuxtLink>
-      </div>
-      <div>
-        <nuxt-img :src="singleData.image" alt="blog-image" format="webp" />
+  <div class="wrapper">
+    <div class="container">
+      <h1>Blog</h1>
+      <p>エンジニアの日常生活をお届けします</p>
+      <div v-for="singleData in data" :key="singleData.id" class="blogCard">
+        <div class="textsContainer">
+          <h3>{{ singleData.title }}</h3>
+          <p>{{ singleData.excerpt }}</p>
+          <p>{{ singleData.date }}</p>
+          <NuxtLink :to="singleData._path" class="linkButton"
+            >Read More</NuxtLink
+          >
+        </div>
+        <div class="blogImg">
+          <nuxt-img :src="singleData.image" alt="blog-image" format="webp" />
+        </div>
       </div>
     </div>
+    <Pagination :numberPages="numberPages" />
   </div>
 </template>
 
 <script setup>
+const blogsPerPage = 5;
+
 const { data } = await useAsyncData("blogQuery", () =>
-  queryContent("/blog").find({ id: -1 })
+  queryContent("/blog").sort({ id: -1 }).limit(blogsPerPage).find()
 );
-console.log("data");
-console.log(data.value);
+
+const allBlogs = await queryContent("/blog").find();
+
+const numberPages = Math.ceil(allBlogs.length / blogsPerPage);
+
+useHead({
+  title: "ブログ",
+  meta: [{ name: "description", content: "ブログページです" }],
+});
 </script>
-<style>
-h1 {
-  color: red;
-}
-.text {
-  color: green;
-  letter-spacing: 20px;
-}
-</style>

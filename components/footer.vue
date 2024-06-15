@@ -1,6 +1,6 @@
 <template>
   <footer>
-    <div>
+    <div class="insideContainer">
       <a href="https://www.google.com/"
         ><img src="/images/github.svg" alt="logo"
       /></a>
@@ -16,7 +16,7 @@
       <hr />
       <NuxtLink to="/blog">Blog</NuxtLink>
       <NuxtLink to="/contact">Contact</NuxtLink>
-      <p>{{ new Date().getFullYear() }} Abe Hiroki</p>
+      <p>©{{ new Date().getFullYear() }} Abe Hiroki</p>
     </div>
   </footer>
 </template>
